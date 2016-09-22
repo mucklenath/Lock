@@ -36,7 +36,7 @@ public class LockscreenViewService extends Service {
     private ImageView mBackgroundLockImageView = null;
     private RelativeLayout mForegroundLayout = null;
     private RelativeLayout mStatusBackgroundDummyView = null;
-    private RelativeLayout mStatusForgroundDummyView = null;
+    private RelativeLayout mStatusForegroundDummyView = null;
     private boolean mIsLockEnable = false;
     private boolean mIsSoftkeyEnable = false;
     private int mDeviceWidth = 0;
@@ -183,7 +183,7 @@ public class LockscreenViewService extends Service {
         mForegroundLayout.setOnTouchListener(mViewTouchListener);
 
         mStatusBackgroundDummyView = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_background_status_dummy);
-        mStatusForgroundDummyView = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_foreground_status_dummy);
+        mStatusForegroundDummyView = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_foreground_status_dummy);
         setBackGroundLockView();
 
         DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
@@ -194,13 +194,13 @@ public class LockscreenViewService extends Service {
         //kitkat
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int val = LockscreenUtil.getInstance(mContext).getStatusBarHeight();
-            RelativeLayout.LayoutParams foregroundParam = (RelativeLayout.LayoutParams) mStatusForgroundDummyView.getLayoutParams();
+            RelativeLayout.LayoutParams foregroundParam = (RelativeLayout.LayoutParams) mStatusForegroundDummyView.getLayoutParams();
             foregroundParam.height = val;
-            mStatusForgroundDummyView.setLayoutParams(foregroundParam);
+            mStatusForegroundDummyView.setLayoutParams(foregroundParam);
             AlphaAnimation alpha = new AlphaAnimation(0.5F, 0.5F);
             alpha.setDuration(0); // Make animation instant
             alpha.setFillAfter(true); // Tell it to persist after the animation ends
-            mStatusForgroundDummyView.startAnimation(alpha);
+            mStatusForegroundDummyView.startAnimation(alpha);
             RelativeLayout.LayoutParams backgroundParam = (RelativeLayout.LayoutParams) mStatusBackgroundDummyView.getLayoutParams();
             backgroundParam.height = val;
             mStatusBackgroundDummyView.setLayoutParams(backgroundParam);
