@@ -7,6 +7,7 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,8 +23,6 @@ import com.example.lockscreen.Lockscreen;
 import com.example.lockscreen.LockscreenUtil;
 import com.example.lockscreen.R;
 import com.example.lockscreen.SharedPreferencesUtil;
-import com.romainpiel.shimmer.Shimmer;
-import com.romainpiel.shimmer.ShimmerTextView;
 
 public class LockscreenViewService extends Service {
     private final int LOCK_OPEN_OFFSET_VALUE = 50;
@@ -35,10 +34,9 @@ public class LockscreenViewService extends Service {
     private RelativeLayout mBackgroundLayout = null;
     private RelativeLayout mBackgroundInLayout = null;
     private ImageView mBackgroundLockImageView = null;
-    private RelativeLayout mForgroundLayout = null;
+    private RelativeLayout mForegroundLayout = null;
     private RelativeLayout mStatusBackgruondDummyView = null;
     private RelativeLayout mStatusForgruondDummyView = null;
-    private ShimmerTextView mShimmerTextView = null;
     private boolean mIsLockEnable = false;
     private boolean mIsSoftkeyEnable = false;
     private int mDeviceWidth = 0;
@@ -186,13 +184,11 @@ public class LockscreenViewService extends Service {
         mBackgroundLayout = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_background_layout);
         mBackgroundInLayout = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_background_in_layout);
         mBackgroundLockImageView = (ImageView) mLockscreenView.findViewById(R.id.lockscreen_background_image);
-        mForgroundLayout = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_forground_layout);
-        mShimmerTextView = (ShimmerTextView) mLockscreenView.findViewById(R.id.shimmer_tv);
-        (new Shimmer()).start(mShimmerTextView);
-        mForgroundLayout.setOnTouchListener(mViewTouchListener);
+        mForegroundLayout = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_foreground_layout);
+        mForegroundLayout.setOnTouchListener(mViewTouchListener);
 
         mStatusBackgruondDummyView = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_background_status_dummy);
-        mStatusForgruondDummyView = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_forground_status_dummy);
+        mStatusForgruondDummyView = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_foreground_status_dummy);
         setBackGroundLockView();
 
         DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
@@ -203,9 +199,9 @@ public class LockscreenViewService extends Service {
         //kitkat
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int val = LockscreenUtil.getInstance(mContext).getStatusBarHeight();
-            RelativeLayout.LayoutParams forgroundParam = (RelativeLayout.LayoutParams) mStatusForgruondDummyView.getLayoutParams();
-            forgroundParam.height = val;
-            mStatusForgruondDummyView.setLayoutParams(forgroundParam);
+            RelativeLayout.LayoutParams foregroundParam = (RelativeLayout.LayoutParams) mStatusForgruondDummyView.getLayoutParams();
+            foregroundParam.height = val;
+            mStatusForgruondDummyView.setLayoutParams(foregroundParam);
             AlphaAnimation alpha = new AlphaAnimation(0.5F, 0.5F);
             alpha.setDuration(0); // Make animation instant
             alpha.setFillAfter(true); // Tell it to persist after the animation ends
@@ -218,28 +214,32 @@ public class LockscreenViewService extends Service {
 
     private void setBackGroundLockView() {
         if (mIsLockEnable) {
-            mBackgroundInLayout.setBackgroundColor(getResources().getColor(R.color.lock_background_color));
+            //mBackgroundInLayout.setBackgroundColor(getResources().getColor(R.color.lock_background_color));
+            mBackgroundInLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.lock_background_color, null));
             mBackgroundLockImageView.setVisibility(View.VISIBLE);
 
         } else {
-            mBackgroundInLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            //mBackgroundInLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            mBackgroundInLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), android.R.color.transparent, null));
             mBackgroundLockImageView.setVisibility(View.GONE);
         }
     }
 
 
-    private void changeBackGroundLockView(float forgroundX) {
+    private void changeBackGroundLockView(float foregroundX) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            if (forgroundX < mDeviceWidth) {
-                mBackgroundLockImageView.setBackground(getResources().getDrawable(R.drawable.lock));
+            if (foregroundX < mDeviceWidth) {
+                //mBackgroundLockImageView.setBackground(getResources().getDrawable(R.drawable.lock));
+                mBackgroundLockImageView.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.lock, null));
             } else {
-                mBackgroundLockImageView.setBackground(getResources().getDrawable(R.drawable.unlock));
+                //mBackgroundLockImageView.setBackground(getResources().getDrawable(R.drawable.unlock));
+                mBackgroundLockImageView.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.unlock, null));
             }
         } else {
-            if (forgroundX < mDeviceWidth) {
-                mBackgroundLockImageView.setBackgroundDrawable(getResources().getDrawable(R.drawable.lock));
+            if (foregroundX < mDeviceWidth) {
+                mBackgroundLockImageView.setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.lock, null));
             } else {
-                mBackgroundLockImageView.setBackgroundDrawable(getResources().getDrawable(R.drawable.unlock));
+                mBackgroundLockImageView.setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.unlock, null));
             }
         }
     }
@@ -260,7 +260,7 @@ public class LockscreenViewService extends Service {
             switch (event.getAction() & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN: {// 0
                     firstTouchX = event.getX();
-                    layoutPrevX = mForgroundLayout.getX();
+                    layoutPrevX = mForegroundLayout.getX();
                     layoutInPrevX = mBackgroundLockImageView.getX();
                     if (firstTouchX <= LOCK_OPEN_OFFSET_VALUE) {
                         isLockOpen = true;
@@ -270,15 +270,15 @@ public class LockscreenViewService extends Service {
                 case MotionEvent.ACTION_MOVE: { // 2
                     if (isLockOpen) {
                         touchMoveX = (int) (event.getRawX() - firstTouchX);
-                        if (mForgroundLayout.getX() >= 0) {
-                            mForgroundLayout.setX((int) (layoutPrevX + touchMoveX));
+                        if (mForegroundLayout.getX() >= 0) {
+                            mForegroundLayout.setX((int) (layoutPrevX + touchMoveX));
                             mBackgroundLockImageView.setX((int) (layoutInPrevX + (touchMoveX / 1.8)));
                             mLastLayoutX = lastLayoutX;
                             mMainHandler.sendEmptyMessage(0);
-                            if (mForgroundLayout.getX() < 0) {
-                                mForgroundLayout.setX(0);
+                            if (mForegroundLayout.getX() < 0) {
+                                mForegroundLayout.setX(0);
                             }
-                            lastLayoutX = mForgroundLayout.getX();
+                            lastLayoutX = mForegroundLayout.getX();
                         }
                     } else {
                         return false;
@@ -287,9 +287,9 @@ public class LockscreenViewService extends Service {
                 break;
                 case MotionEvent.ACTION_UP: { // 1
                     if (isLockOpen) {
-                        mForgroundLayout.setX(lastLayoutX);
-                        mForgroundLayout.setY(0);
-                        optimizeForground(lastLayoutX);
+                        mForegroundLayout.setX(lastLayoutX);
+                        mForegroundLayout.setY(0);
+                        optimizeForeground(lastLayoutX);
                     }
                     isLockOpen = false;
                     firstTouchX = 0;
@@ -307,12 +307,12 @@ public class LockscreenViewService extends Service {
         }
     };
 
-    private void optimizeForground(float forgroundX) {
+    private void optimizeForeground(float foregroundX) {
 //        final int devideDeviceWidth = (mDeviceWidth / 2);
-        if (forgroundX < mDevideDeviceWidth) {
+        if (foregroundX < mDevideDeviceWidth) {
             int startPostion = 0;
             for (startPostion = mDevideDeviceWidth; startPostion >= 0; startPostion--) {
-                mForgroundLayout.setX(startPostion);
+                mForegroundLayout.setX(startPostion);
             }
         } else {
             TranslateAnimation animation = new TranslateAnimation(0, mDevideDeviceWidth, 0, 0);
@@ -324,8 +324,8 @@ public class LockscreenViewService extends Service {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    mForgroundLayout.setX(mDevideDeviceWidth);
-                    mForgroundLayout.setY(0);
+                    mForegroundLayout.setX(mDevideDeviceWidth);
+                    mForegroundLayout.setY(0);
                     dettachLockScreenView();
                 }
 
@@ -334,7 +334,7 @@ public class LockscreenViewService extends Service {
                 }
             });
 
-            mForgroundLayout.startAnimation(animation);
+            mForegroundLayout.startAnimation(animation);
         }
     }
 }

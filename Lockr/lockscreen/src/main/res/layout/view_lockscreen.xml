@@ -36,12 +36,12 @@
     </RelativeLayout>
 
     <com.example.lockscreen.LockScreenView
-        android:id="@+id/lockscreen_forground_layout"
+        android:id="@+id/lockscreen_foreground_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/lockscreen_forground_status_dummy"
+            android:id="@+id/lockscreen_foreground_status_dummy"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_alignParentTop="true"
@@ -53,15 +53,16 @@
             android:layout_centerInParent="true"
             android:background="@drawable/lockscreenbackground"/>
 
-        <com.romainpiel.shimmer.ShimmerTextView
-            android:id="@+id/shimmer_tv"
+        <TextView
+            android:text="@string/slide_to_unlock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/slide_to_unlock"
-            android:textColor="#444"
-            android:textSize="30sp" />
+            android:layout_marginBottom="30dp"
+            android:textSize="30sp"
+            android:textColor="@color/colorAccent"
+            android:id="@+id/textView" />
 
     </com.example.lockscreen.LockScreenView>
 
