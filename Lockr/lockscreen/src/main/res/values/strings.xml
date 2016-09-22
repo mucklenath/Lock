@@ -1,6 +1,4 @@
 <resources>
     <string name="app_name">Lockr</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
     <string name="slide_to_unlock">Slide to unlock...</string>
 </resources>

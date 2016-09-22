@@ -24,12 +24,12 @@
             android:layout_below="@id/lockscreen_background_status_dummy"
             android:background="@android:color/transparent">
 
-            <!--<ImageView-->
-                <!--android:id="@+id/lockscreen_background_image"-->
-                <!--android:layout_width="150dp"-->
-                <!--android:layout_height="150dp"-->
-                <!--android:layout_centerInParent="true"-->
-                <!--android:background="@drawable/lock" />-->
+            <ImageView
+                android:id="@+id/lockscreen_background_image"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/lock" />
 
         </RelativeLayout>
 
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:background="@drawable/images"/>
+            android:background="@drawable/lockscreenbackground"/>
 
         <com.romainpiel.shimmer.ShimmerTextView
             android:id="@+id/shimmer_tv"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/"
+            android:text="@string/slide_to_unlock"
             android:textColor="#444"
             android:textSize="30sp" />
 
