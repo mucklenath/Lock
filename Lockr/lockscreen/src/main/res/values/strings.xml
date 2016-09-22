@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Lockr</string>
-    <string name="slide_to_unlock">Slide to unlock...</string>
+    <string name="slide_to_unlock">Slide to unlock&#8230;</string>
 </resources>

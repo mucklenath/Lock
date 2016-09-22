@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Message;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
@@ -17,7 +16,6 @@ import com.example.lockscreen.service.LockscreenViewService;
 public class LockscreenActivity extends Activity {
     private final String TAG = "LockscreenActivity";
     private static Context sLockscreenActivityContext = null;
-    ;
     private RelativeLayout mLockscreenMainLayout = null;
 
     public static SendMessageHandler mMainHandler = null;
@@ -35,7 +33,6 @@ public class LockscreenActivity extends Activity {
             }
         }
 
-        ;
     };
 
     @Override
@@ -84,18 +81,9 @@ public class LockscreenActivity extends Activity {
         mLockscreenMainLayout.getBackground().setAlpha(15);
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        return super.dispatchTouchEvent(ev);
-    }
-
     private void setLockGuard() {
         boolean isLockEnable = false;
-        if (!LockscreenUtil.getInstance(sLockscreenActivityContext).isStandardKeyguardState()) {
-            isLockEnable = false;
-        } else {
-            isLockEnable = true;
-        }
+        isLockEnable = LockscreenUtil.getInstance(sLockscreenActivityContext).isStandardKeyguardState();
 
         Intent startLockscreenIntent = new Intent(this, LockscreenViewService.class);
         startService(startLockscreenIntent);
@@ -109,21 +97,6 @@ public class LockscreenActivity extends Activity {
                 mMainHandler.sendEmptyMessage(0);
             }
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
     }
 
 }

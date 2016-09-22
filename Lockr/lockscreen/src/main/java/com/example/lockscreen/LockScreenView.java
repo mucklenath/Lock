@@ -12,30 +12,22 @@ public class LockScreenView extends RelativeLayout {
     public LockScreenView(Context context) {
         super(context);
         mActivityContext = context;
-        initView();
     }
 
     public LockScreenView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mActivityContext = context;
-        initView();
     }
 
     public LockScreenView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mActivityContext = context;
-        initView();
     }
 
     @TargetApi(21)
     public LockScreenView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         mActivityContext = context;
-        initView();
-    }
-
-    private void initView() {
-
     }
 
 }

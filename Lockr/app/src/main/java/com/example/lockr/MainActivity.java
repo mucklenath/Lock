@@ -14,7 +14,7 @@ import com.example.lockscreen.SharedPreferencesUtil;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SwitchCompat mSwitchd = null;
+    private SwitchCompat mSwitch = null;
     private Context mContext = null;
 
     @Override
@@ -25,19 +25,19 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferencesUtil.init(mContext);
         checkDrawOverlayPermission();
 
-        mSwitchd = (SwitchCompat) this.findViewById(R.id.switch_locksetting);
-        mSwitchd.setTextOn("yes");
-        mSwitchd.setTextOff("no");
+        mSwitch = (SwitchCompat) this.findViewById(R.id.switch_locksetting);
+        mSwitch.setTextOn("yes");
+        mSwitch.setTextOff("no");
         boolean lockState = SharedPreferencesUtil.get(Lockscreen.ISLOCK);
         if (lockState) {
-            mSwitchd.setChecked(true);
+            mSwitch.setChecked(true);
 
         } else {
-            mSwitchd.setChecked(false);
+            mSwitch.setChecked(false);
 
         }
 
-        mSwitchd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {

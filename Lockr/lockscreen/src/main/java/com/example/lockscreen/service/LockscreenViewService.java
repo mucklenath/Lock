@@ -35,18 +35,18 @@ public class LockscreenViewService extends Service {
     private RelativeLayout mBackgroundInLayout = null;
     private ImageView mBackgroundLockImageView = null;
     private RelativeLayout mForegroundLayout = null;
-    private RelativeLayout mStatusBackgruondDummyView = null;
-    private RelativeLayout mStatusForgruondDummyView = null;
+    private RelativeLayout mStatusBackgroundDummyView = null;
+    private RelativeLayout mStatusForgroundDummyView = null;
     private boolean mIsLockEnable = false;
     private boolean mIsSoftkeyEnable = false;
     private int mDeviceWidth = 0;
-    private int mDevideDeviceWidth = 0;
+    private int mDivideDeviceWidth = 0;
     private float mLastLayoutX = 0;
     private int mServiceStartId = 0;
-    private SendMassgeHandler mMainHandler = null;
+    private SendMessageHandler mMainHandler = null;
 //    private boolean sIsSoftKeyEnable = false;
 
-    private class SendMassgeHandler extends android.os.Handler {
+    private class SendMessageHandler extends android.os.Handler {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -70,7 +70,7 @@ public class LockscreenViewService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mMainHandler = new SendMassgeHandler();
+        mMainHandler = new SendMessageHandler();
         if (isLockScreenAble()) {
             if (null != mWindowManager) {
                 if (null != mLockscreenView) {
@@ -90,7 +90,7 @@ public class LockscreenViewService extends Service {
 
     @Override
     public void onDestroy() {
-        dettachLockScreenView();
+        detachLockScreenView();
     }
 
 
@@ -142,11 +142,6 @@ public class LockscreenViewService extends Service {
 
     private boolean isLockScreenAble() {
         boolean isLock = SharedPreferencesUtil.get(Lockscreen.ISLOCK);
-        if (isLock) {
-            isLock = true;
-        } else {
-            isLock = false;
-        }
         return isLock;
     }
 
@@ -167,7 +162,7 @@ public class LockscreenViewService extends Service {
     }
 
 
-    private boolean dettachLockScreenView() {
+    private boolean detachLockScreenView() {
         if (null != mWindowManager && null != mLockscreenView) {
             mWindowManager.removeView(mLockscreenView);
             mLockscreenView = null;
@@ -187,28 +182,28 @@ public class LockscreenViewService extends Service {
         mForegroundLayout = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_foreground_layout);
         mForegroundLayout.setOnTouchListener(mViewTouchListener);
 
-        mStatusBackgruondDummyView = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_background_status_dummy);
-        mStatusForgruondDummyView = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_foreground_status_dummy);
+        mStatusBackgroundDummyView = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_background_status_dummy);
+        mStatusForgroundDummyView = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_foreground_status_dummy);
         setBackGroundLockView();
 
         DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
         mDeviceWidth = displayMetrics.widthPixels;
-        mDevideDeviceWidth = (mDeviceWidth / 2);
-        mBackgroundLockImageView.setX((int) (((mDevideDeviceWidth) * -1)));
+        mDivideDeviceWidth = (mDeviceWidth / 2);
+        mBackgroundLockImageView.setX(((mDivideDeviceWidth) * -1));
 
         //kitkat
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int val = LockscreenUtil.getInstance(mContext).getStatusBarHeight();
-            RelativeLayout.LayoutParams foregroundParam = (RelativeLayout.LayoutParams) mStatusForgruondDummyView.getLayoutParams();
+            RelativeLayout.LayoutParams foregroundParam = (RelativeLayout.LayoutParams) mStatusForgroundDummyView.getLayoutParams();
             foregroundParam.height = val;
-            mStatusForgruondDummyView.setLayoutParams(foregroundParam);
+            mStatusForgroundDummyView.setLayoutParams(foregroundParam);
             AlphaAnimation alpha = new AlphaAnimation(0.5F, 0.5F);
             alpha.setDuration(0); // Make animation instant
             alpha.setFillAfter(true); // Tell it to persist after the animation ends
-            mStatusForgruondDummyView.startAnimation(alpha);
-            RelativeLayout.LayoutParams backgroundParam = (RelativeLayout.LayoutParams) mStatusBackgruondDummyView.getLayoutParams();
+            mStatusForgroundDummyView.startAnimation(alpha);
+            RelativeLayout.LayoutParams backgroundParam = (RelativeLayout.LayoutParams) mStatusBackgroundDummyView.getLayoutParams();
             backgroundParam.height = val;
-            mStatusBackgruondDummyView.setLayoutParams(backgroundParam);
+            mStatusBackgroundDummyView.setLayoutParams(backgroundParam);
         }
     }
 
@@ -308,14 +303,14 @@ public class LockscreenViewService extends Service {
     };
 
     private void optimizeForeground(float foregroundX) {
-//        final int devideDeviceWidth = (mDeviceWidth / 2);
-        if (foregroundX < mDevideDeviceWidth) {
-            int startPostion = 0;
-            for (startPostion = mDevideDeviceWidth; startPostion >= 0; startPostion--) {
-                mForegroundLayout.setX(startPostion);
+//        final int divideDeviceWidth = (mDeviceWidth / 2);
+        if (foregroundX < mDivideDeviceWidth) {
+            int startPosition = 0;
+            for (startPosition = mDivideDeviceWidth; startPosition >= 0; startPosition--) {
+                mForegroundLayout.setX(startPosition);
             }
         } else {
-            TranslateAnimation animation = new TranslateAnimation(0, mDevideDeviceWidth, 0, 0);
+            TranslateAnimation animation = new TranslateAnimation(0, mDivideDeviceWidth, 0, 0);
             animation.setDuration(300);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
@@ -324,9 +319,9 @@ public class LockscreenViewService extends Service {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    mForegroundLayout.setX(mDevideDeviceWidth);
+                    mForegroundLayout.setX(mDivideDeviceWidth);
                     mForegroundLayout.setY(0);
-                    dettachLockScreenView();
+                    detachLockScreenView();
                 }
 
                 @Override

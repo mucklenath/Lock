@@ -29,13 +29,13 @@ public class LockscreenUtil {
         mContext = context;
     }
     public boolean isStandardKeyguardState() {
-        boolean isStandardKeyguqrd = false;
-        KeyguardManager keyManager =(KeyguardManager) mContext.getSystemService(mContext.KEYGUARD_SERVICE);
+        boolean isStandardKeyguard = false;
+        KeyguardManager keyManager =(KeyguardManager) mContext.getSystemService(Context.KEYGUARD_SERVICE);
         if (null != keyManager) {
-            isStandardKeyguqrd = keyManager.isKeyguardSecure();
+            isStandardKeyguard = keyManager.isKeyguardSecure();
         }
 
-        return isStandardKeyguqrd;
+        return isStandardKeyguard;
     }
 
     public boolean isSoftKeyAvail(Context context) {
