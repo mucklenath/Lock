@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.example.lockscreen.Lockscreen;
 import com.example.lockscreen.LockscreenActivity;
 import com.example.lockscreen.LockscreenUtil;
 
@@ -36,6 +37,17 @@ public class LockscreenService extends Service {
             }
         }
     };
+
+    public class StartMyServiceAtBootReceiver extends BroadcastReceiver { //TODO
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+                //Intent serviceIntent = new Intent(mContext, LockscreenViewService.class);
+                //context.startService(serviceIntent);
+                Lockscreen.getInstance(mContext).startLockscreenService();
+            }
+        }
+    }
 
     private void stateReceiver(boolean isStartReceiver) {
         if (isStartReceiver) {

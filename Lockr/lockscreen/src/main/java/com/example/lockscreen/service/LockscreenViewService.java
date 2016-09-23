@@ -250,7 +250,7 @@ public class LockscreenViewService extends Service {
         private int touchInMoveX = 0;
 
         @Override
-        public boolean onTouch(View v, MotionEvent event) {
+        public boolean onTouch(View v, MotionEvent event) { //TODO
 
             switch (event.getAction() & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN: {// 0

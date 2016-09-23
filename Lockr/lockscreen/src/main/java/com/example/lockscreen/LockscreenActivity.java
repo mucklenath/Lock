@@ -40,12 +40,8 @@ public class LockscreenActivity extends Activity {
         super.onCreate(arg0);
         sLockscreenActivityContext = this;
         mMainHandler = new SendMessageHandler();
-//        getWindow().setType(2004);
-//        getWindow().addFlags(524288);
-//        getWindow().addFlags(4194304);
-        ///
+
         getWindow().setType(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
@@ -82,7 +78,7 @@ public class LockscreenActivity extends Activity {
     }
 
     private void setLockGuard() {
-        boolean isLockEnable = false;
+        boolean isLockEnable;
         isLockEnable = LockscreenUtil.getInstance(sLockscreenActivityContext).isStandardKeyguardState();
 
         Intent startLockscreenIntent = new Intent(this, LockscreenViewService.class);

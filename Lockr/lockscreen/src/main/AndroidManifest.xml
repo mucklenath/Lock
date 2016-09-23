@@ -17,10 +17,23 @@
         android:theme="@style/AppTheme">
         <activity android:name=".LockscreenActivity">
         </activity>
-        <service android:name=".service.LockscreenService" >
+        <service android:name=".service.LockscreenService" android:label="Lockscreen Service">
+            <intent-filter>
+                <action android:name="com.myapp.MyService" />
+            </intent-filter>
         </service>
         <service android:name=".service.LockscreenViewService" >
         </service>
+
+        <receiver
+            android:name=".service.LockscreenService$StartMyServiceAtBootReceiver"
+            android:label="StartMyServiceAtBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
+
+
