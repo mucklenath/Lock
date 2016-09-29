@@ -32,8 +32,6 @@ public class LockscreenViewService extends Service {
     private WindowManager mWindowManager;
     private WindowManager.LayoutParams mParams;
     private RelativeLayout mBackgroundLayout = null;
-    //private RelativeLayout mBackgroundInLayout = null;
-    //private ImageView mBackgroundLockImageView = null;
     private RelativeLayout mForegroundLayout = null;
     private RelativeLayout mStatusBackgroundDummyView = null;
     private RelativeLayout mStatusForegroundDummyView = null;
@@ -44,13 +42,11 @@ public class LockscreenViewService extends Service {
     private float mLastLayoutX = 0;
     private int mServiceStartId = 0;
     private SendMessageHandler mMainHandler = null;
-//    private boolean sIsSoftKeyEnable = false;
 
     private class SendMessageHandler extends android.os.Handler {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            //changeBackGroundLockView(mLastLayoutX);
         }
     }
     @Override
@@ -64,7 +60,6 @@ public class LockscreenViewService extends Service {
         super.onCreate();
         mContext = this;
         SharedPreferencesUtil.init(mContext);
-//        sIsSoftKeyEnable = SharedPreferencesUtil.get(Lockscreen.ISSOFTKEY);
     }
 
 
@@ -183,20 +178,16 @@ public class LockscreenViewService extends Service {
 
     private void settingLockView() {
         mBackgroundLayout = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_background_layout);
-        //mBackgroundInLayout = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_background_in_layout);
-        //mBackgroundLockImageView = (ImageView) mLockscreenView.findViewById(R.id.lockscreen_background_image);
         mForegroundLayout = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_foreground_layout);
         mForegroundLayout.setOnTouchListener(mViewTouchListener);
 
         mStatusBackgroundDummyView = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_background_status_dummy);
         mStatusForegroundDummyView = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_foreground_status_dummy);
-        //setBackGroundLockView();
 
         DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
         mDeviceWidth = displayMetrics.widthPixels;
         mDivideDeviceWidth = mDeviceWidth / 2;
         lockOpenOffset = mDivideDeviceWidth / 2; //Opening the screen gesture must start in the first quarter of the screen
-        //mBackgroundLockImageView.setX(((mDivideDeviceWidth) * -1));
 
         //kitkat
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -214,54 +205,20 @@ public class LockscreenViewService extends Service {
         }
     }
 
-//    private void setBackGroundLockView() {
-//        if (mIsLockEnable) {
-//            mBackgroundInLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.lock_background_color, null));
-//            mBackgroundLockImageView.setVisibility(View.VISIBLE);
-//
-//        } else {
-//            mBackgroundInLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), android.R.color.transparent, null));
-//            mBackgroundLockImageView.setVisibility(View.GONE);
-//        }
-//    }
-
-
-//    private void changeBackGroundLockView(float foregroundX) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//            if (foregroundX < mDeviceWidth) {
-//                //mBackgroundLockImageView.setBackground(getResources().getDrawable(R.drawable.lock));
-//                mBackgroundLockImageView.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.lock, null));
-//            } else {
-//                //mBackgroundLockImageView.setBackground(getResources().getDrawable(R.drawable.unlock));
-//                mBackgroundLockImageView.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.unlock, null));
-//            }
-//        } else {
-//            if (foregroundX < mDeviceWidth) {
-//                mBackgroundLockImageView.setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.lock, null));
-//            } else {
-//                mBackgroundLockImageView.setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.unlock, null));
-//            }
-//        }
-//    }
-
-
     private View.OnTouchListener mViewTouchListener = new View.OnTouchListener() {
         private float firstTouchX = 0;
         private float layoutPrevX = 0;
         private float lastLayoutX = 0;
-        //private float layoutInPrevX = 0;
         private boolean isLockOpen = false;
         private int touchMoveX = 0;
-        private int touchInMoveX = 0;
 
         @Override
-        public boolean onTouch(View v, MotionEvent event) { //TODO
+        public boolean onTouch(View v, MotionEvent event) {
 
             switch (event.getAction() & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_DOWN: {
                     firstTouchX = event.getX();
                     layoutPrevX = mForegroundLayout.getX();
-                    // layoutInPrevX = mBackgroundLockImageView.getX();
                     if (firstTouchX <= lockOpenOffset) {
                         isLockOpen = true;
                     }
@@ -272,7 +229,6 @@ public class LockscreenViewService extends Service {
                         touchMoveX = (int) (event.getRawX() - firstTouchX);
                         if (mForegroundLayout.getX() >= 0) {
                             mForegroundLayout.setX((int) (layoutPrevX + touchMoveX));
-                            //mBackgroundLockImageView.setX((int) (layoutInPrevX + (touchMoveX / 1.8)));
                             mLastLayoutX = lastLayoutX;
                             mMainHandler.sendEmptyMessage(0);
                             if (mForegroundLayout.getX() < 0) {
@@ -294,7 +250,6 @@ public class LockscreenViewService extends Service {
                     isLockOpen = false;
                     firstTouchX = 0;
                     layoutPrevX = 0;
-                    //layoutInPrevX = 0;
                     touchMoveX = 0;
                     lastLayoutX = 0;
                 }
