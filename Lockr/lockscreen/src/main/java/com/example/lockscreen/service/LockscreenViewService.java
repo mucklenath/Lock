@@ -25,7 +25,7 @@ import com.example.lockscreen.R;
 import com.example.lockscreen.SharedPreferencesUtil;
 
 public class LockscreenViewService extends Service {
-    private final int LOCK_OPEN_OFFSET_VALUE = 50;
+    private int lockOpenOffset = 50;
     private Context mContext = null;
     private LayoutInflater mInflater = null;
     private View mLockscreenView = null;
@@ -50,7 +50,7 @@ public class LockscreenViewService extends Service {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            changeBackGroundLockView(mLastLayoutX);
+            //changeBackGroundLockView(mLastLayoutX);
         }
     }
     @Override
@@ -159,7 +159,7 @@ public class LockscreenViewService extends Service {
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION); //TODO
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
             mWindowManager.addView(mLockscreenView, mParams);
             settingLockView();
         }
@@ -195,6 +195,7 @@ public class LockscreenViewService extends Service {
         DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
         mDeviceWidth = displayMetrics.widthPixels;
         mDivideDeviceWidth = (mDeviceWidth / 2);
+        lockOpenOffset = mDivideDeviceWidth;
         mBackgroundLockImageView.setX(((mDivideDeviceWidth) * -1));
 
         //kitkat
@@ -215,12 +216,10 @@ public class LockscreenViewService extends Service {
 
     private void setBackGroundLockView() {
         if (mIsLockEnable) {
-            //mBackgroundInLayout.setBackgroundColor(getResources().getColor(R.color.lock_background_color));
             mBackgroundInLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.lock_background_color, null));
             mBackgroundLockImageView.setVisibility(View.VISIBLE);
 
         } else {
-            //mBackgroundInLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
             mBackgroundInLayout.setBackgroundColor(ResourcesCompat.getColor(getResources(), android.R.color.transparent, null));
             mBackgroundLockImageView.setVisibility(View.GONE);
         }
@@ -263,7 +262,7 @@ public class LockscreenViewService extends Service {
                     firstTouchX = event.getX();
                     layoutPrevX = mForegroundLayout.getX();
                     layoutInPrevX = mBackgroundLockImageView.getX();
-                    if (firstTouchX <= LOCK_OPEN_OFFSET_VALUE) {
+                    if (firstTouchX <= lockOpenOffset) {
                         isLockOpen = true;
                     }
                 }
@@ -309,7 +308,6 @@ public class LockscreenViewService extends Service {
     };
 
     private void optimizeForeground(float foregroundX) {
-//        final int divideDeviceWidth = (mDeviceWidth / 2);
         if (foregroundX < mDivideDeviceWidth) {
             int startPosition = 0;
             for (startPosition = mDivideDeviceWidth; startPosition >= 0; startPosition--) {
