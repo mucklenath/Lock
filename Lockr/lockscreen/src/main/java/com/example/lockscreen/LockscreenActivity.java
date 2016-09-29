@@ -18,7 +18,7 @@ public class LockscreenActivity extends Activity {
     private static Context sLockscreenActivityContext = null;
     private RelativeLayout mLockscreenMainLayout = null;
 
-    public static SendMessageHandler mMainHandler = null;
+    private static SendMessageHandler mMainHandler = null;
 
     public PhoneStateListener phoneStateListener = new PhoneStateListener() {
         public void onCallStateChanged(int state, String incomingNumber) {

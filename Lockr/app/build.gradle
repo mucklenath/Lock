@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.lockr"
-        minSdkVersion 15
-        targetSdkVersion 24
+        minSdkVersion 16
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }

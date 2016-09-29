@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /** code to post/handler request for permission */
-    public final static int REQUEST_CODE = 5463;
+    private final static int REQUEST_CODE = 5463;
 
     public void checkDrawOverlayPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
