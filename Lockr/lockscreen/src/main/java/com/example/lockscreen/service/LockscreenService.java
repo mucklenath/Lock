@@ -16,7 +16,6 @@ import com.example.lockscreen.LockscreenUtil;
 
 public class LockscreenService extends Service {
     private final String TAG = "LockscreenService";
-    //    public static final String LOCKSCREENSERVICE_FIRST_START = "LOCKSCREENSERVICE_FIRST_START";
     private int mServiceStartId = 0;
     private Context mContext = null;
 
@@ -38,12 +37,10 @@ public class LockscreenService extends Service {
         }
     };
 
-    public class StartMyServiceAtBootReceiver extends BroadcastReceiver { //TODO
+    public class StartMyServiceAtBootReceiver extends BroadcastReceiver { //TODO Fix
         @Override
         public void onReceive(Context context, Intent intent) {
             if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-                //Intent serviceIntent = new Intent(mContext, LockscreenViewService.class);
-                //context.startService(serviceIntent);
                 Lockscreen.getInstance(mContext).startLockscreenService();
             }
         }
@@ -68,7 +65,6 @@ public class LockscreenService extends Service {
         mContext = this;
     }
 
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mServiceStartId = startId;
@@ -82,7 +78,6 @@ public class LockscreenService extends Service {
         setLockGuard();
         return LockscreenService.START_STICKY;
     }
-
 
     private void setLockGuard() {
         initKeyguardService();
@@ -123,12 +118,10 @@ public class LockscreenService extends Service {
         }
     }
 
-
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
-
 
     @Override
     public void onDestroy() {

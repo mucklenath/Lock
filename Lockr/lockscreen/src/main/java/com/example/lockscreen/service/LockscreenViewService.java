@@ -7,7 +7,6 @@ import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Message;
-import android.support.v4.content.res.ResourcesCompat;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,7 +15,6 @@ import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.example.lockscreen.Lockscreen;
@@ -54,14 +52,12 @@ public class LockscreenViewService extends Service {
         return null;
     }
 
-
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = this;
         SharedPreferencesUtil.init(mContext);
     }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -87,7 +83,6 @@ public class LockscreenViewService extends Service {
     public void onDestroy() {
         detachLockScreenView();
     }
-
 
     private void initState() {
 
@@ -139,7 +134,6 @@ public class LockscreenViewService extends Service {
         return isLock;
     }
 
-
     private void attachLockScreenView() {
 
         if (null != mWindowManager && null != mLockscreenView && null != mParams) {
@@ -161,7 +155,6 @@ public class LockscreenViewService extends Service {
 
     }
 
-
     private boolean detachLockScreenView() {
         if (null != mWindowManager && null != mLockscreenView) {
             mLockscreenView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
@@ -174,7 +167,6 @@ public class LockscreenViewService extends Service {
             return false;
         }
     }
-
 
     private void settingLockView() {
         mBackgroundLayout = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_background_layout);

@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 import com.example.lockscreen.service.LockscreenViewService;
 
 public class LockscreenActivity extends Activity {
-    private final String TAG = "LockscreenActivity";
     private static Context sLockscreenActivityContext = null;
     private RelativeLayout mLockscreenMainLayout = null;
 
@@ -94,5 +93,4 @@ public class LockscreenActivity extends Activity {
             }
         }
     }
-
 }

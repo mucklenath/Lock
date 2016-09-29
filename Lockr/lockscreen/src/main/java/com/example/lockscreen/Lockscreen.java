@@ -34,7 +34,6 @@ public class Lockscreen {
     public void startLockscreenService() {
         SharedPreferencesUtil.init(mContext);
         Intent startLockscreenIntent =  new Intent(mContext, LockscreenService.class);
-//        startLockscreenIntent.putExtra(LockscreenService.LOCKSCREENSERVICE_FIRST_START, true);
         mContext.startService(startLockscreenIntent);
 
     }
