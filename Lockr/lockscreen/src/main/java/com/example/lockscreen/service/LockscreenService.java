@@ -37,15 +37,6 @@ public class LockscreenService extends Service {
         }
     };
 
-    public class StartMyServiceAtBootReceiver extends BroadcastReceiver { //TODO Fix
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-                Lockscreen.getInstance(mContext).startLockscreenService();
-            }
-        }
-    }
-
     private void stateReceiver(boolean isStartReceiver) {
         if (isStartReceiver) {
             IntentFilter filter = new IntentFilter();
