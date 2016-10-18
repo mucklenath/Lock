@@ -10,7 +10,6 @@ import android.os.IBinder;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.example.lockscreen.Lockscreen;
 import com.example.lockscreen.LockscreenActivity;
 import com.example.lockscreen.LockscreenUtil;
 
