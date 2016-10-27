@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.example.lockscreen.service.LockscreenService;
-import com.example.lockscreen.service.LockscreenViewService;
+//import com.example.lockscreen.service.LockscreenViewService;
 
 public class Lockscreen {
     private Context mContext = null;
@@ -38,8 +38,9 @@ public class Lockscreen {
 
     }
     public void stopLockscreenService() {
-        Intent stopLockscreenViewIntent =  new Intent(mContext, LockscreenViewService.class);
-        mContext.stopService(stopLockscreenViewIntent);
+        //TODO stop activity instead
+        //Intent stopLockscreenViewIntent =  new Intent(mContext, LockscreenViewService.class);
+        //mContext.stopService(stopLockscreenViewIntent);
         Intent stopLockscreenIntent =  new Intent(mContext, LockscreenService.class);
         mContext.stopService(stopLockscreenIntent);
     }

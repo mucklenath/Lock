@@ -24,8 +24,9 @@ public class LockscreenService extends Service {
         public void onReceive(Context context, Intent intent) {
             if (null != context) {
                 if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-                    Intent startLockscreenIntent = new Intent(mContext, LockscreenViewService.class);
-                    stopService(startLockscreenIntent);
+                    // TODO Had to comment this out
+                    //Intent startLockscreenIntent = new Intent(mContext, LockscreenViewService.class);
+                    //stopService(startLockscreenIntent);
                     TelephonyManager tManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
                     boolean isPhoneIdle = tManager.getCallState() == TelephonyManager.CALL_STATE_IDLE;
                     if (isPhoneIdle) {
