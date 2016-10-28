@@ -24,7 +24,7 @@ public class LockscreenActivity extends Activity {
     private static Context sLockscreenActivityContext = null;
     private RelativeLayout mLockscreenMainLayout = null;
 
-    //private static SendMessageHandler mMainHandler = null;
+    private static SendMessageHandler mMainHandler = null;
 
     public PhoneStateListener phoneStateListener = new PhoneStateListener() {
         public void onCallStateChanged(int state, String incomingNumber) {
@@ -45,7 +45,7 @@ public class LockscreenActivity extends Activity {
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         sLockscreenActivityContext = this;
-//        mMainHandler = new SendMessageHandler();
+        mMainHandler = new SendMessageHandler();
 
         getWindow().setType(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
@@ -63,7 +63,7 @@ public class LockscreenActivity extends Activity {
         lockscreenInFront();
         initLockScreenUi();
 
-        //setLockGuard();
+        setLockGuard();
     }
 
     private class SendMessageHandler extends android.os.Handler {
@@ -84,23 +84,23 @@ public class LockscreenActivity extends Activity {
         mLockscreenMainLayout.getBackground().setAlpha(15);
     }
 
-//    private void setLockGuard() {
-//        boolean isLockEnable;
-//        isLockEnable = LockscreenUtil.getInstance(sLockscreenActivityContext).isStandardKeyguardState();
-//
-//        Intent startLockscreenIntent = new Intent(this, LockscreenViewService.class);
-//        startService(startLockscreenIntent);
-//
-//        boolean isSoftkeyEnable = LockscreenUtil.getInstance(sLockscreenActivityContext).isSoftKeyAvail(this);
-//        SharedPreferencesUtil.setBoolean(Lockscreen.ISSOFTKEY, isSoftkeyEnable);
-//        if (!isSoftkeyEnable) {
-//            mMainHandler.sendEmptyMessage(0);
-//        } else if (isSoftkeyEnable) {
-//            if (isLockEnable) {
-//                mMainHandler.sendEmptyMessage(0);
-//            }
-//        }
-//    }
+    private void setLockGuard() {
+        boolean isLockEnable;
+        isLockEnable = LockscreenUtil.getInstance(sLockscreenActivityContext).isStandardKeyguardState();
+
+        //Intent startLockscreenIntent = new Intent(this, LockscreenViewService.class);
+        //startService(startLockscreenIntent);
+
+        boolean isSoftkeyEnable = LockscreenUtil.getInstance(sLockscreenActivityContext).isSoftKeyAvail(this);
+        SharedPreferencesUtil.setBoolean(Lockscreen.ISSOFTKEY, isSoftkeyEnable);
+        if (!isSoftkeyEnable) {
+            mMainHandler.sendEmptyMessage(0);
+        } else if (isSoftkeyEnable) {
+            if (isLockEnable) {
+                mMainHandler.sendEmptyMessage(0);
+            }
+        }
+    }
 
     private int lockOpenOffset = 50;
     private Context mContext = null;
@@ -119,12 +119,6 @@ public class LockscreenActivity extends Activity {
     private float mLastLayoutX = 0;
     private int mServiceStartId = 0;
 //    private LockscreenViewService.SendMessageHandler mMainHandler = null;
-
-//    @Override
-//    public IBinder onBind(Intent intent) {
-//        return null;
-//    }
-
 
     public void lockscreenInFront() {
         if (isLockScreenAble()) {
@@ -210,23 +204,30 @@ public class LockscreenActivity extends Activity {
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
             mWindowManager.addView(mLockscreenView, mParams);
             settingLockView();
-        }
 
+            if (!isFinishing()) {
+                mWindowManager.addView(mLockscreenView, mParams);
+                settingLockView();
+            } else {
+                destroyLockScreen();
+                finish();
+            }
+        }
     }
 
     //TODO this is never called
-    private boolean detachLockScreenView() {
-        if (null != mWindowManager && null != mLockscreenView) {
-            mLockscreenView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-            mWindowManager.removeView(mLockscreenView);
-            mLockscreenView = null;
-            mWindowManager = null;
-            //stopSelf(mServiceStartId);
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    private boolean detachLockScreenView() {
+//        if (null != mWindowManager && null != mLockscreenView) {
+//            mLockscreenView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+//            mWindowManager.removeView(mLockscreenView);
+//            mLockscreenView = null;
+//            mWindowManager = null;
+//            //stopSelf(mServiceStartId);
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 
     private void settingLockView() {
         mBackgroundLayout = (RelativeLayout) mLockscreenView.findViewById(R.id.lockscreen_background_layout);
@@ -282,7 +283,7 @@ public class LockscreenActivity extends Activity {
                         if (mForegroundLayout.getX() >= 0) {
                             mForegroundLayout.setX((int) (layoutPrevX + touchMoveX));
                             mLastLayoutX = lastLayoutX;
-                            //mMainHandler.sendEmptyMessage(0);
+                            mMainHandler.sendEmptyMessage(0);
                             if (mForegroundLayout.getX() < 0) {
                                 mForegroundLayout.setX(0);
                             }
@@ -332,7 +333,7 @@ public class LockscreenActivity extends Activity {
                 public void onAnimationEnd(Animation animation) {
                     mForegroundLayout.setX(mDivideDeviceWidth);
                     mForegroundLayout.setY(0);
-                    detachLockScreenView();
+                    destroyLockScreen();
                 }
 
                 @Override
@@ -342,5 +343,26 @@ public class LockscreenActivity extends Activity {
 
             mForegroundLayout.startAnimation(animation);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        destroyLockScreen();
+    }
+
+    private void destroyLockScreen() {
+
+        if (null != mLockscreenView) {
+            mLockscreenView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        }
+        if (null != mWindowManager) {
+            mWindowManager.removeView(mLockscreenView);
+        }
+        mWindowManager = null;
+        mLockscreenView = null;
+
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
     }
 }
