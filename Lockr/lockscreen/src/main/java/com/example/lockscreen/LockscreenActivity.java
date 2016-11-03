@@ -150,14 +150,14 @@ public class LockscreenActivity extends Activity {
             mParams = new WindowManager.LayoutParams(
                     WindowManager.LayoutParams.MATCH_PARENT,
                     WindowManager.LayoutParams.MATCH_PARENT,
-                    WindowManager.LayoutParams.TYPE_SYSTEM_ERROR,
+                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
         } else {
             mParams = new WindowManager.LayoutParams(
                     WindowManager.LayoutParams.MATCH_PARENT,
                     WindowManager.LayoutParams.MATCH_PARENT,
-                    WindowManager.LayoutParams.TYPE_PHONE,
+                    WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                             | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                             | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD,
@@ -202,12 +202,13 @@ public class LockscreenActivity extends Activity {
                     return false;
                 }
             });
-            mLockscreenView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+//            mLockscreenView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+//                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+//                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
             mWindowManager.addView(mLockscreenView, mParams);
             settingLockView();
         }
